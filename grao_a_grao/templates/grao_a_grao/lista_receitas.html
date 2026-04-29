@@ -1,57 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grão a Grão - Receitas</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        h1 { color: #2c3e50; text-align: center; border-bottom: 3px solid #27ae60; padding-bottom: 10px; }
-        
-        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        
-        .titulo { color: #27ae60; margin-top: 0; }
-        
-        .badges { margin-bottom: 15px; }
-        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; text-transform: uppercase; margin-right: 8px; }
-        .dieta { background-color: #e1f5fe; color: #0288d1; }
-        .tipo { background-color: #f1f8e9; color: #33691e; }
-        
-        .preparacao { line-height: 1.6; color: #555; background: #fdfdfd; padding: 15px; border-left: 4px solid #eee; }
-        .footer-receita { font-size: 0.85em; color: #999; margin-top: 15px; display: block; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>O Meu Livro de Receitas</h1>
+{% extends 'grao_a_grao/base.html' %}
 
-        {% for receita in receitas %}
-            <div class="card">
-                <h2 class="titulo">{{ receita.titulo }}</h2>
-                
-                <div class="badges">
-                    <span class="badge dieta">🥗 {{ receita.get_categoria_display }}</span>
-                    <span class="badge tipo">🍽️ {{ receita.get_tipo_prato_display }}</span>
-                </div>
+{% block title %}O Meu Livro de Receitas{% endblock %}
 
-                <div class="preparacao">
-                    <strong>Modo de Preparação:</strong>
-                    <p>{{ receita.preparacao|linebreaks }}</p>
-                </div>
+{% block content %}
+    <h1>O Meu Livro de Receitas</h1>
 
-                <small class="footer-receita">
-                    Inserido por: <strong>{{ receita.autor }}</strong> | 📅 {{ receita.data_criacao|date:"d/m/Y" }}
-                </small>
+    {% for receita in receitas %}
+        <div class="card" style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <h2 class="titulo">
+                <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="text-decoration: none; color: #27ae60;">
+                 {{ receita.titulo }}
+                </a>
+            </h2>
+            
+            <div class="badges" style="margin-bottom: 15px;">
+                <span class="badge dieta" style="background-color: #e1f5fe; color: #0288d1; padding: 5px 12px; border-radius: 20px; font-size: 0.85em;">
+                    🥗 {{ receita.get_categoria_display }}
+                </span>
+                <span class="badge tipo" style="background-color: #f1f8e9; color: #33691e; padding: 5px 12px; border-radius: 20px; font-size: 0.85em;">
+                    🍽️ {{ receita.get_tipo_prato_display }}
+                </span>
             </div>
-        {% empty %}
-            <div class="card">
-                <p>Ainda não foram adicionadas receitas ao sistema.</p>
-            </div>
-        {% endfor %}
 
-        <p style="text-align: center;"><a href="{% url 'home' %}" style="color: #27ae60;">← Voltar à Home</a></p>
-    </div>
-</body>
-</html>
+            <p><strong>Autor:</strong> {{ receita.autor }}</p>
+            <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="color: #27ae60; font-weight: bold;">Ver receita completa →</a>
+        </div>
+    {% empty %}
+        <div class="card">
+            <p>Ainda não foram adicionadas receitas ao sistema.</p>
+        </div>
+    {% endfor %}
+{% endblock %}

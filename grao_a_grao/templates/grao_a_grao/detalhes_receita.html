@@ -1,0 +1,29 @@
+{% extends 'grao_a_grao/base.html' %}
+
+{% block title %}{{ receita.titulo }} - Grão a Grão{% endblock %}
+
+{% block content %}
+    <a href="{% url 'lista_receitas' %}" style="display: inline-block; margin-bottom: 20px; color: #27ae60; text-decoration: none;">
+        ← Voltar para a lista
+    </a>
+    
+    <h1>{{ receita.titulo }}</h1>
+    <p><em>{{ receita.get_categoria_display }} | {{ receita.get_tipo_prato_display }}</em></p>
+
+    <div style="background: #f4f4f4; padding: 20px; border-radius: 8px;">
+        <h3>Ingredientes:</h3>
+        <ul>
+            {% for ingrediente in receita.ingredientes.all %}
+                <li>{{ ingrediente.quantidade }} {{ ingrediente.unidade }} de {{ ingrediente.nome }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h3>Modo de Preparação:</h3>
+    <div style="line-height: 1.6;">
+        {{ receita.preparacao|linebreaks }}
+    </div>
+    
+    <hr>
+    <small>Autor: {{ receita.autor }} | Criada em: {{ receita.data_criacao|date:"d/m/Y" }}</small>
+{% endblock %}
