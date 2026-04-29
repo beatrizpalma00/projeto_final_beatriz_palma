@@ -1,0 +1,20 @@
+{% extends 'grao_a_grao/base.html' %}
+
+{% block title %}Criar Conta - Grão a Grão{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: auto; padding: 40px 0;">
+    <h2>Cria a tua conta</h2>
+    <p>Junta-te à nossa comunidade de cozinha sustentável.</p>
+    
+    <form method="post" style="background: #f9f9f9; padding: 20px; border-radius: 10px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%;">
+            Registar
+        </button>
+    </form>
+    
+    <p style="margin-top: 20px;">Já tens conta? <a href="{% url 'login' %}" style="color: #27ae60;">Entra aqui</a>.</p>
+</div>
+{% endblock %}

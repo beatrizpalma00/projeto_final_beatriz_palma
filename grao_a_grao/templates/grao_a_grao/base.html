@@ -11,25 +11,57 @@
         .container { padding: 20px; max-width: 1000px; margin: auto; }
         footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; margin-top: 40px; }
         .logo { font-size: 1.5rem; font-weight: bold; }
+
+        /* Estilo para as mensagens de alerta */
+        .messages { list-style: none; padding: 0; margin-bottom: 20px; }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 10px; font-weight: bold; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Grão a Grão</div>
-        <div>
-            <a href="{% url 'home' %}">Início</a>
+        <a href="{% url 'home' %}" class="logo">Grão a Grão</a>
+        <div style="display: flex; align-items: center;">
             <a href="{% url 'lista_receitas' %}">Receitas</a>
-            </div>
+
+            {% if user.is_authenticated %}
+                <div style="display: flex; align-items: center; gap: 15px; margin-left: 15px;">
+                    <span style="color: white;">Olá, <strong>{{ user.username }}</strong></span>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem;">
+                            Sair
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div style="display: flex; gap: 15px; margin-left: 15px;">
+                    <a href="{% url 'login' %}">Entrar</a>
+                    <a href="{% url 'registo' %}">Registo</a>
+                </div>
+            {% endif %}
+        </div>
     </nav>
 
     <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>
 
     <footer>
-        &copy; 2024 Grão a Grão - O teu guia de receitas sustentáveis
+        &copy; 2026 Grão a Grão - O teu guia de receitas sustentáveis
     </footer>
 
 </body>

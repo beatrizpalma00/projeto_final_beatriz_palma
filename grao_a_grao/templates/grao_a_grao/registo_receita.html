@@ -1,0 +1,65 @@
+{% extends 'grao_a_grao/base.html' %}
+
+{% block title %}Registar Nova Receita - Grão a Grão{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 20px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    
+    <h2 style="color: #27ae60; text-align: center; margin-top: 0;">🥗 Nova Receita</h2>
+    <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+        Primeiro, vamos definir os detalhes principais da tua receita.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #2c3e50;">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: #e74c3c; font-size: 0.85em; margin-top: 5px;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div style="margin-top: 30px;">
+            <button type="submit" style="background: #27ae60; color: white; border: none; padding: 15px 25px; border-radius: 30px; cursor: pointer; width: 100%; font-size: 1.1em; font-weight: bold; transition: 0.3s;">
+                Continuar para Ingredientes →
+            </button>
+        </div>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'lista_receitas' %}" style="color: #95a5a6; text-decoration: none; font-size: 0.9em;">
+            Cancelar e voltar
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Estilos para os campos do formulário ficarem bonitos */
+    input[type="text"], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-sizing: border-box; /* Garante que o padding não estica a caixa */
+        font-family: inherit;
+        font-size: 1em;
+    }
+
+    textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #27ae60;
+        outline: none;
+        box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
+    }
+</style>
+{% endblock %}

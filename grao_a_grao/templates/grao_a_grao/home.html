@@ -1,37 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grão a Grão - Gestão de Receitas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+{% extends 'grao_a_grao/base.html' %}
 
-    <nav class="navbar navbar-dark bg-success mb-4">
-        <div class="container">
-            <span class="navbar-brand mb-0 h1">Grão a Grão</span>
-        </div>
-    </nav>
+{% block title %}Início - Grão a Grão{% endblock %}
 
-    <div class="container text-center">
-        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-            <h1 class="display-5 fw-bold text-success">Olá!</h1>
-            <p class="col-md-8 fs-4 mx-auto">
-                Bem-vindo à tua plataforma de planeamento de refeições. 
-                Aqui vais poder gerir as tuas receitas e criar listas de compras de forma inteligente.
-            </p>
-            <hr class="my-4">
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <button type="button" class="btn btn-success btn-lg px-4 gap-3">Ver Receitas</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Planeamento</button>
-            </div>
-        </div>
+{% block content %}
+<div style="text-align: center; padding: 60px 20px; background-color: #ffffff; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h1 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 10px;">Bem-vindo ao Grão a Grão</h1>
+    <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 600px; margin: 0 auto 40px auto;">
+        A tua plataforma de receitas sustentáveis. Aprende a cozinhar com consciência, grão a grão.
+    </p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+    <a href="{% url 'login' %}" style="background-color: #27ae60; color: white; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; transition: 0.3s;">
+        Entrar
+    </a>
+    
+    <a href="{% url 'registo' %}" style="background-color: #ffffff; color: #27ae60; border: 2px solid #27ae60; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; transition: 0.3s;">
+        Criar Conta
+    </a>
+</div>
     </div>
 
-    <footer class="text-center text-muted mt-5">
-        <small>&copy; Grão a Grão</small>
-    </footer>
-
-</body>
-</html>
+    <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #eee;">
+        <p style="color: #95a5a6;">Queres apenas explorar?</p>
+        <a href="{% url 'lista_receitas' %}" style="color: #27ae60; font-weight: bold; text-decoration: underline;">
+            Ver Catálogo de Receitas
+        </a>
+    </div>
+</div>
+{% endblock %}

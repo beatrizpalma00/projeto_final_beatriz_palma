@@ -3,31 +3,44 @@
 {% block title %}O Meu Livro de Receitas{% endblock %}
 
 {% block content %}
-    <h1>O Meu Livro de Receitas</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="color: #2c3e50; margin: 0;">O Meu Livro de Receitas</h1>
+        
+        <a href="{% url 'registo_receita' %}" style="background-color: #27ae60; color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);">
+            + Registar Nova Receita
+        </a>
+    </div>
 
     {% for receita in receitas %}
-        <div class="card" style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-            <h2 class="titulo">
-                <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="text-decoration: none; color: #27ae60;">
+        <div class="card" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #27ae60;">
+            <h2 class="titulo" style="margin-top: 0;">
+                <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="text-decoration: none; color: #2c3e50;">
                  {{ receita.titulo }}
                 </a>
             </h2>
             
-            <div class="badges" style="margin-bottom: 15px;">
-                <span class="badge dieta" style="background-color: #e1f5fe; color: #0288d1; padding: 5px 12px; border-radius: 20px; font-size: 0.85em;">
+            <div class="badges" style="margin-bottom: 15px; display: flex; gap: 10px;">
+                <span class="badge dieta" style="background-color: #e1f5fe; color: #0288d1; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 500;">
                     🥗 {{ receita.get_categoria_display }}
                 </span>
-                <span class="badge tipo" style="background-color: #f1f8e9; color: #33691e; padding: 5px 12px; border-radius: 20px; font-size: 0.85em;">
+                <span class="badge tipo" style="background-color: #f1f8e9; color: #33691e; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 500;">
                     🍽️ {{ receita.get_tipo_prato_display }}
                 </span>
             </div>
 
-            <p><strong>Autor:</strong> {{ receita.autor }}</p>
-            <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="color: #27ae60; font-weight: bold;">Ver receita completa →</a>
+            <p style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 15px;">
+                <strong>Criada por:</strong> {{ receita.autor.username }} | 
+                <strong>Data:</strong> {{ receita.data_criacao|date:"d/m/Y" }}
+            </p>
+
+            <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="color: #27ae60; font-weight: bold; text-decoration: none; display: inline-block;">
+                Ver receita completa →
+            </a>
         </div>
     {% empty %}
-        <div class="card">
-            <p>Ainda não foram adicionadas receitas ao sistema.</p>
+        <div style="text-align: center; padding: 40px; background: white; border-radius: 12px; color: #95a5a6;">
+            <p style="font-size: 1.2em;">Ainda não tens receitas no teu repositório privado.</p>
+            <a href="{% url 'registo_receita' %}" style="color: #27ae60; font-weight: bold;">Cria a tua primeira receita aqui!</a>
         </div>
     {% endfor %}
 {% endblock %}
