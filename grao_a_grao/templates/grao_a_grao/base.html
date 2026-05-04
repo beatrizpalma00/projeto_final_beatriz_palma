@@ -2,36 +2,56 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Grão a Grão{% endblock %}</title>
     <style>
-        /* CSS Geral para todo o site */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; line-height: 1.6; color: #333; }
-        nav { background: #27ae60; padding: 1rem; color: white; display: flex; justify-content: space-between; align-items: center; }
-        nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .container { padding: 20px; max-width: 1000px; margin: auto; }
-        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; margin-top: 40px; }
+        
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+        nav { background: #27ae60; padding: 1rem; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; transition: opacity 0.3s; }
+        nav a:hover { opacity: 0.8; }
+        .container { padding: 20px; max-width: 1000px; margin: auto; min-height: 80vh; }
+        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; margin-top: 40px; background: white; }
         .logo { font-size: 1.5rem; font-weight: bold; }
 
-        /* Estilo para as mensagens de alerta */
+       
         .messages { list-style: none; padding: 0; margin-bottom: 20px; }
         .alert { padding: 15px; border-radius: 8px; margin-bottom: 10px; font-weight: bold; }
         .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        
+        
+        input, select, textarea { 
+            width: 100%; 
+            padding: 8px; 
+            margin: 5px 0 15px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+        }
     </style>
 </head>
 <body>
 
     <nav>
         <a href="{% url 'home' %}" class="logo">Grão a Grão</a>
-        <div style="display: flex; align-items: center;">
+        
+        <div class="nav-links">
+            <!-- Links acessíveis a todos -->
             <a href="{% url 'lista_receitas' %}">Receitas</a>
 
             {% if user.is_authenticated %}
-                <div style="display: flex; align-items: center; gap: 15px; margin-left: 15px;">
+                <!-- Links exclusivos para quem está logado -->
+                <a href="{% url 'ver_planeamento' %}">📅 Planeamento</a>
+                <a href="{% url 'gerar_lista_compras' %}">🛒 Lista de Compras</a>
+
+                <div style="display: flex; align-items: center; gap: 15px; margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 15px;">
                     <span style="color: white;">Olá, <strong>{{ user.username }}</strong></span>
-                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0;">
                         {% csrf_token %}
-                        <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem;">
+                        <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-weight: bold; width: auto;">
                             Sair
                         </button>
                     </form>
@@ -61,7 +81,7 @@
     </div>
 
     <footer>
-        &copy; 2026 Grão a Grão - O teu guia de receitas sustentáveis
+        &copy; 2026 Grão a Grão - Organiza as tuas refeições de forma simples!
     </footer>
 
 </body>

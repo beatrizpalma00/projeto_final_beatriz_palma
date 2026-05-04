@@ -6,26 +6,45 @@
     
     <form method="post" style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" style="background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+        
+        
+        {{ form.nome.label_tag }} {{ form.nome }}
+        {{ form.quantidade.label_tag }} {{ form.quantidade }}
+        {{ form.unidade.label_tag }} {{ form.unidade }}
+        {{ form.secao.label_tag }} {{ form.secao }}
+        
+         <button type="submit" style="background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
             + Adicionar Ingrediente
         </button>
-    </form>
+    </form> 
 
     <hr>
 
-    <h3>Lista Atual:</h3>
-    <ul>
-        {% for ing in ingredientes %}
-            <li>{{ ing.quantidade }} {{ ing.unidade }} de {{ ing.nome }}</li>
-        {% empty %}
-            <li>Ainda não adicionaste ingredientes.</li>
-        {% endfor %}
-    </ul>
+    <h3 style="margin-top: 30px; color: #2c3e50;">Lista Atual:</h3>
+    <div style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            {% for ing in receita.ingredientes.all %}
+                <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid #eee;">
+                    <span style="color: #34495e;">
+                        
+                        <strong>{{ ing.quantidade }} {{ ing.get_unidade_display }}</strong> de {{ ing.nome }}
+                    </span>
+                    
+                    <a href="{% url 'remover_ingrediente' ing.id %}" 
+                       style="color: #e74c3c; text-decoration: none; font-weight: bold; font-size: 0.85em; padding: 5px 10px; border: 1px solid #e74c3c; border-radius: 4px; transition: 0.3s;"
+                       onmouseover="this.style.backgroundColor='#e74c3c'; this.style.color='white';"
+                       onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e74c3c';">
+                        Apagar 🗑️
+                    </a>
+                </li>
+            {% empty %}
+                <li style="padding: 20px; color: #95a5a6; text-align: center;">Ainda não adicionaste ingredientes.</li>
+            {% endfor %}
+        </ul>
+    </div>
 
     <div style="margin-top: 30px;">
-        <a href="{% url 'concluir_receita' receita.id %}" 
-           style="display: block; text-align: center; background: #27ae60; color: white; padding: 15px; border-radius: 30px; text-decoration: none; font-weight: bold;">
+        <a href="{% url 'concluir_receita' receita.id %}" style="background-color: #2ecc71; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">
             Finalizar e Guardar Receita
         </a>
     </div>

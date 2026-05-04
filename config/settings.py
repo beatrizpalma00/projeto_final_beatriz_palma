@@ -117,5 +117,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# settings.py
 LOGIN_REDIRECT_URL = 'lista_receitas'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'

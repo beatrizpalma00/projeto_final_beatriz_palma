@@ -1,21 +1,73 @@
 {% extends 'grao_a_grao/base.html' %}
 
-{% block title %}O Meu Livro de Receitas{% endblock %}
+{% block title %}As Minhas Receitas{% endblock %}
 
 {% block content %}
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h1 style="color: #2c3e50; margin: 0;">O Meu Livro de Receitas</h1>
-        
-        <a href="{% url 'registo_receita' %}" style="background-color: #27ae60; color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);">
-            + Registar Nova Receita
-        </a>
-    </div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1 style="color: #2c3e50; margin: 0;">As Minhas Receitas</h1>
 
-    {% for receita in receitas %}
-        <div class="card" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #27ae60;">
+    <a href="{% url 'registo_receita' %}" style="background-color: #27ae60; color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);">
+        + Registar Nova Receita
+    </a>
+</div>
+
+
+<div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #eee;">
+    <form method="GET" style="display: flex; flex-direction: column; gap: 20px;">
+        
+       
+        <div style="width: 100%;">
+            <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">Pesquisar por nome:</label>
+            <input type="text" name="q" value="{{ valor_pesquisa|default:'' }}" placeholder="Ex: Lasanha, Bolo de Chocolate..." 
+                   style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; background-color: #fcfcfc;">
+        </div>
+
+        <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+            
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #7f8c8d; font-size: 0.9em;">Filtrar por Categoria:</label>
+                <select name="categoria" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background-color: #fcfcfc;">
+                    <option value="">Todas as categorias</option>
+                    <option value="carne" {% if categoria_selecionada == 'carne' %}selected{% endif %}>🥩 Carne</option>
+                    <option value="peixe" {% if categoria_selecionada == 'peixe' %}selected{% endif %}>🐟 Peixe</option>
+                    <option value="vegetariano" {% if categoria_selecionada == 'vegetariano' %}selected{% endif %}>🥗 Vegetariano</option>
+                    <option value="vegan" {% if categoria_selecionada == 'vegan' %}selected{% endif %}>🌱 Vegan</option>
+                </select>
+            </div>
+
+            
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #7f8c8d; font-size: 0.9em;">Tipo de Prato:</label>
+                <select name="tipo" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background-color: #fcfcfc;">
+                    <option value="">Todos os tipos</option>
+                    <option value="entrada" {% if tipo_selecionado == 'entrada' %}selected{% endif %}>Entrada</option>
+                    <option value="principal" {% if tipo_selecionado == 'principal' %}selected{% endif %}>Prato Principal</option>
+                    <option value="sobremesa" {% if tipo_selecionado == 'sobremesa' %}selected{% endif %}>Sobremesa</option>
+                    <option value="lanche_pq_almoco" {% if tipo_selecionado == 'lanche_pq_almoco' %}selected{% endif %}>Lanche / Pequeno-Almoço</option>
+                </select>
+            </div>
+
+            
+            <div style="display: flex; gap: 10px;">
+                <button type="submit" style="background: #27ae60; color: white; border: none; padding: 11px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                    🔍 Pesquisar
+                </button>
+                <a href="{% url 'lista_receitas' %}" style="background: #bdc3c7; color: white; border: none; padding: 11px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 0.9em; display: flex; align-items: center;">
+                    Limpar Filtros
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% for receita in receitas %}
+<div class="card" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #27ae60;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
             <h2 class="titulo" style="margin-top: 0;">
                 <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="text-decoration: none; color: #2c3e50;">
-                 {{ receita.titulo }}
+                    {{ receita.titulo }}
                 </a>
             </h2>
             
@@ -24,23 +76,41 @@
                     🥗 {{ receita.get_categoria_display }}
                 </span>
                 <span class="badge tipo" style="background-color: #f1f8e9; color: #33691e; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 500;">
-                    🍽️ {{ receita.get_tipo_prato_display }}
+                    {% if receita.tipo_prato == 'LANCHE_PQ_ALMOCO' %}☕🥪{% else %}🍽️{% endif %} {{ receita.get_tipo_prato_display }}
                 </span>
             </div>
+        </div>
 
-            <p style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 15px;">
-                <strong>Criada por:</strong> {{ receita.autor.username }} | 
-                <strong>Data:</strong> {{ receita.data_criacao|date:"d/m/Y" }}
-            </p>
+        <a href="{% url 'adicionar_planeamento' receita_id=receita.id %}" style="background-color: #2ecc71; color: white; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 8px; transition: background 0.3s;">
+            📅 Planear
+        </a>
+    </div>
 
-            <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="color: #27ae60; font-weight: bold; text-decoration: none; display: inline-block;">
-                Ver receita completa →
+    <p style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 15px;">
+        <strong>Data:</strong> {{ receita.data_criacao|date:"d/m/Y" }}
+    </p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #f8f9fa;">
+        <a href="{% url 'detalhes_receita' pk=receita.pk %}" style="color: #27ae60; font-weight: bold; text-decoration: none;">
+            Ver receita completa →
+        </a>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <a href="{% url 'editar_receita' pk=receita.pk %}" style="color: #2980b9; font-weight: bold; text-decoration: none; font-size: 0.9em;">
+                ✏️ Editar
             </a>
+            <form action="{% url 'eliminar_receita' pk=receita.pk %}" method="post" onsubmit="return confirm('Tens a certeza?');">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 0.9em;">
+                    🗑️ Eliminar
+                </button>
+            </form>
         </div>
-    {% empty %}
-        <div style="text-align: center; padding: 40px; background: white; border-radius: 12px; color: #95a5a6;">
-            <p style="font-size: 1.2em;">Ainda não tens receitas no teu repositório privado.</p>
-            <a href="{% url 'registo_receita' %}" style="color: #27ae60; font-weight: bold;">Cria a tua primeira receita aqui!</a>
-        </div>
-    {% endfor %}
+    </div>
+</div>
+{% empty %}
+<div style="text-align: center; padding: 40px; background: white; border-radius: 12px; color: #95a5a6;">
+    <p style="font-size: 1.2em;">Não foram encontradas receitas para esta pesquisa. Tente novamente.</p>
+    <a href="{% url 'lista_receitas' %}" style="color: #27ae60; font-weight: bold;">Ver todas as receitas</a>.
+</div>
+{% endfor %}
 {% endblock %}
