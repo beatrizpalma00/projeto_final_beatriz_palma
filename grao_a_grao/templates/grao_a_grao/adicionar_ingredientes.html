@@ -2,7 +2,13 @@
 
 {% block content %}
 <div style="max-width: 600px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-    <h2>Ingredientes para: {{ receita.titulo }}</h2>
+    <h2>
+        {% if editando_ingrediente %}
+            ✏️ Editar Ingrediente
+        {% else %}
+            Ingredientes para: {{ receita.titulo }}
+        {% endif %}
+    </h2>
     
     <form method="post" style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
         {% csrf_token %}
@@ -13,9 +19,16 @@
         {{ form.unidade.label_tag }} {{ form.unidade }}
         {{ form.secao.label_tag }} {{ form.secao }}
         
-         <button type="submit" style="background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
-            + Adicionar Ingrediente
+         <button type="submit" style="background: {% if editando_ingrediente %}#f39c12{% else %}#3498db{% endif %}; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold;">
+            {% if editando_ingrediente %}
+                💾 Guardar Alterações
+            {% else %}
+                + Adicionar Ingrediente
+            {% endif %}
         </button>
+        {% if editando_ingrediente %}
+            <a href="{% url 'adicionar_ingredientes' receita.id %}" style="display: block; text-align: center; margin-top: 10px; color: #7f8c8d; text-decoration: none; font-size: 0.9em;">Cancelar Edição</a>
+        {% endif %}
     </form> 
 
     <hr>
@@ -27,15 +40,24 @@
                 <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid #eee;">
                     <span style="color: #34495e;">
                         
-                        <strong>{{ ing.quantidade }} {{ ing.get_unidade_display }}</strong> de {{ ing.nome }}
+                        <strong>{{ ing.quantidade }} {{ ing.get_unidade_display }} de {{ ing.nome }}</strong>
                     </span>
                     
-                    <a href="{% url 'remover_ingrediente' ing.id %}" 
-                       style="color: #e74c3c; text-decoration: none; font-weight: bold; font-size: 0.85em; padding: 5px 10px; border: 1px solid #e74c3c; border-radius: 4px; transition: 0.3s;"
-                       onmouseover="this.style.backgroundColor='#e74c3c'; this.style.color='white';"
-                       onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e74c3c';">
-                        Apagar 🗑️
-                    </a>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="{% url 'editar_ingrediente' ing.id %}" 
+                           style="color: #2980b9; text-decoration: none; font-weight: bold; font-size: 0.85em; padding: 5px 10px; border: 1px solid #2980b9; border-radius: 4px; transition: 0.3s;"
+                           onmouseover="this.style.backgroundColor='#2980b9'; this.style.color='white';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#2980b9';">
+                            Editar ✏️
+                        </a>
+                        <a href="javascript:void(0);" 
+                           onclick="confirmarLink('{% url 'remover_ingrediente' ing.id %}', 'Remover Ingrediente?', 'Tem a certeza que deseja apagar o ingrediente {{ ing.nome }}?')"
+                           style="color: #e74c3c; text-decoration: none; font-weight: bold; font-size: 0.85em; padding: 5px 10px; border: 1px solid #e74c3c; border-radius: 4px; transition: 0.3s;"
+                           onmouseover="this.style.backgroundColor='#e74c3c'; this.style.color='white';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#e74c3c';">
+                            Apagar 🗑️
+                        </a>
+                    </div>
                 </li>
             {% empty %}
                 <li style="padding: 20px; color: #95a5a6; text-align: center;">Ainda não adicionaste ingredientes.</li>
@@ -43,9 +65,13 @@
         </ul>
     </div>
 
-    <div style="margin-top: 30px;">
+    <div style="margin-top: 30px; display: flex; align-items: center; gap: 20px;">
         <a href="{% url 'concluir_receita' receita.id %}" style="background-color: #2ecc71; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">
             Finalizar e Guardar Receita
+        </a>
+        
+        <a href="{% url 'lista_receitas' %}" style="color: #95a5a6; text-decoration: none; font-size: 0.9em;">
+            Cancelar e voltar
         </a>
     </div>
 </div>

@@ -8,14 +8,19 @@
     </a>
     
     <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-        <h1 style="color: #2c3e50; margin-bottom: 10px;">{{ receita.titulo }}</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="color: #2c3e50; margin: 0;">{{ receita.titulo }}</h1>
+            <a href="{% url 'editar_receita' receita.id %}" class="btn btn-warning" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; background-color: rgba(210, 180, 140, 0.3); color: #5d4037; border: 1px solid rgba(210, 180, 140, 0.6); font-weight: bold; white-space: nowrap;">
+                ✏️ Editar Receita
+            </a>
+        </div>
         
         <div style="margin-bottom: 30px;">
             <span style="background-color: #e1f5fe; color: #0288d1; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; margin-right: 10px;">
-                🥗 {{ receita.get_categoria_display }}
+                {{ receita.get_categoria_display }}
             </span>
             <span style="background-color: #f1f8e9; color: #33691e; padding: 5px 15px; border-radius: 20px; font-size: 0.9em;">
-                🍽️ {{ receita.get_tipo_prato_display }}
+                {{ receita.get_tipo_prato_display }}
             </span>
         </div>
 
@@ -24,7 +29,7 @@
                 <h3 style="color: #27ae60; margin-top: 0;">🛒 Ingredientes</h3>
                 <ul style="padding-left: 20px; line-height: 1.8;">
                     {% for ingrediente in receita.ingredientes.all %}
-                        <li><strong>{{ ingrediente.quantidade }} {{ ingrediente.unidade }}</strong> de {{ ingrediente.nome }}</li>
+                        <li><strong>{{ ingrediente.quantidade }} {{ ingrediente.get_unidade_display }} de {{ ingrediente.nome }}</strong></li>
                     {% empty %}
                         <li style="list-style: none; color: #95a5a6; margin-left: -20px;">Nenhum ingrediente registado.</li>
                     {% endfor %}

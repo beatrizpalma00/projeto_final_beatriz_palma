@@ -13,14 +13,20 @@
     <form method="POST">
         {% csrf_token %}
         
+        {% if form.non_field_errors %}
+            <div style="color: #e74c3c; margin-bottom: 15px;">{{ form.non_field_errors }}</div>
+        {% endif %}
+
         <div style="margin-bottom: 20px;">
             <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">Escolha o dia?</label>
             {{ form.data }}
+            {% if form.data.errors %}<div style="color: #e74c3c; font-size: 0.85em;">{{ form.data.errors }}</div>{% endif %}
         </div>
 
         <div style="margin-bottom: 20px;">
             <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">Escolha a refeição?</label>
             {{ form.tipo_refeicao }}
+            {% if form.tipo_refeicao.errors %}<div style="color: #e74c3c; font-size: 0.85em;">{{ form.tipo_refeicao.errors }}</div>{% endif %}
         </div>
 
         

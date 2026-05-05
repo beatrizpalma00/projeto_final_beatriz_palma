@@ -1,50 +1,103 @@
 {% extends 'grao_a_grao/base.html' %}
 
+{% block title %}Lista de Compras - Grão a Grão{% endblock %}
+
 {% block content %}
-<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #2c3e50; text-align: center;">🛒 A Minha Lista de Compras</h2>
-    <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
-        Baseada em {{ planos|length }} refeições planeadas.
-    </p>
+<div style="max-width: 800px; margin: 0 auto; padding: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+        <h2 style="color: #2c3e50; margin: 0;">🛒 Lista de Compras</h2>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'exportar_lista_txt' %}" style="background: #34495e; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 8px;">
+                ⬇️ Descarregar .txt
+            </a>
+            <a href="{% url 'ver_planeamento' %}" style="background: #f0f0f0; color: #7f8c8d; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 0.9em;">
+                Voltar
+            </a>
+        </div>
+    </div>
+
+    <div style="background: #fdfdfd; border-radius: 12px; padding: 20px; margin-bottom: 30px; border: 1px solid #e8f5e9;">
+        <h4 style="margin: 0; color: #2d6a4f;">A sua lista de compras está organizada por secções e apresenta a quantidade dos produtos que vai precisar para realizar as suas refeições.</h4>
+        <p style="margin: 10px 0 0 0; font-size: 0.9em; color: #666; font-style: italic;">
+            Nota: Os produtos à venda no supermercado podem ser em embalagens de quantidades diferentes.
+        </p>
+    </div>
 
     {% regroup lista by secao_display as seccoes_agrupadas %}
 
-    {% for grupo in seccoes_agrupadas %}
-        <h3 style="color: #e67e22; margin: 25px 0 10px 5px; font-size: 1.2em; border-left: 4px solid #f39c12; padding-left: 10px;">
-            {{ grupo.grouper }}
-        </h3>
-
-        <div style="background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 10px 20px; margin-bottom: 20px;">
-            <ul style="list-style: none; padding: 0;">
-                {% for item in grupo.list %}
-                    <li style="display: flex; align-items: center; padding: 12px 0; {% if not forloop.last %}border-bottom: 1px solid #eee;{% endif %}">
-                        <input type="checkbox" style="width: 20px; height: 20px; margin-right: 15px; cursor: pointer;">
-                        
-                        <span style="font-size: 1.1em; color: #34495e;">
-                            <strong>{{ item.quantidade|floatformat:2 }} {{ item.unidade }}</strong> de {{ item.nome }}
+    {% for seccao in seccoes_agrupadas %}
+        <div style="margin-bottom: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden;">
+            <div style="background: #2d6a4f; color: white; padding: 12px 20px; font-weight: bold;">
+                {{ seccao.grouper|upper }}
+            </div>
+            <div style="padding: 10px;">
+                {% for item in seccao.list %}
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; {% if not forloop.last %}border-bottom: 1px solid #f9f9f9;{% endif %}">
+                        <div style="display: flex; align-items: center;">
+                        <input type="checkbox" style="width: 20px; height: 20px; margin-right: 15px; cursor: pointer; accent-color: #2d6a4f;">
+                        <span style="flex: 1; font-size: 1.05em; color: #34495e;">
+                            <strong>{{ item.quantidade|floatformat:"-2" }} {{ item.unidade }}</strong> de {{ item.nome }}
                         </span>
-                    </li>
+                        </div>
+                        
+                        <form action="{% url 'marcar_despensa' %}" method="post" style="margin: 0;">
+                            {% csrf_token %}
+                            <input type="hidden" name="chave" value="{{ item.chave }}">
+                            <button type="submit" style="background: none; border: 1px solid #ddd; padding: 5px 10px; border-radius: 5px; cursor: pointer; color: #7f8c8d; font-size: 0.8em;">
+                                📦 Despensa
+                            </button>
+                        </form>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     {% empty %}
-        <div style="background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 40px; text-align: center;">
-            <p style="color: #95a5a6;">Não há ingredientes para comprar. Adicione refeições ao seu planeamento primeiro!</p>
+        <div style="text-align: center; padding: 50px; background: white; border-radius: 15px;">
+            <p style="color: #95a5a6; font-size: 1.2em;">Não há ingredientes para listar. Adicione receitas ao seu planeamento primeiro!</p>
+            <a href="{% url 'ver_planeamento' %}" style="color: #2d6a4f; font-weight: bold; text-decoration: none;">Ir para o Planeamento</a>
         </div>
     {% endfor %}
-    
-    
-    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                
-        <a href="{% url 'exportar_lista_txt' %}" style="background: #27ae60; color: white; padding: 15px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            📥 Descarregar Lista de Compras (.txt)
-        </a>
+
+    {% if lista_despensa %}
+    <div style="margin-top: 50px;">
+        <h3 style="color: #7f8c8d; border-bottom: 2px solid #eee; padding-bottom: 10px;">📦 Na Despensa</h3>
+        <p style="font-size: 0.9em; color: #95a5a6; margin-bottom: 20px;">Estes itens foram removidos da lista de compras principal.</p>
         
-        <a href="{% url 'ver_planeamento' %}" style="background: #a3b18a; color: white; padding: 15px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            ⬅️ Voltar ao Planeamento
-        </a>
-        
+        <div style="background: #f9f9f9; border-radius: 12px; border: 1px solid #eee;">
+            {% for item in lista_despensa %}
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; {% if not forloop.last %}border-bottom: 1px solid #eee;{% endif %}">
+                    <span style="color: #95a5a6; text-decoration: line-through;">
+                        {{ item.quantidade|floatformat:"-2" }} {{ item.unidade }} de {{ item.nome }}
+                    </span>
+                    
+                    <form action="{% url 'remover_despensa' %}" method="post" style="margin: 0;">
+                        {% csrf_token %}
+                        <input type="hidden" name="chave" value="{{ item.chave }}">
+                        <button type="submit" style="background: #fff; border: 1px solid #27ae60; padding: 4px 10px; border-radius: 5px; cursor: pointer; color: #27ae60; font-size: 0.8em; font-weight: bold;">
+                            ➕ Repor na Lista
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 40px; color: #bdc3c7; font-size: 0.85em;">
+        Lista gerada automaticamente. Projeto Grão a Grão.
     </div>
 </div>
+
+<style>
+    /* Estilo para riscar o texto quando o checkbox é marcado */
+    input[type="checkbox"]:checked + span {
+        text-decoration: line-through;
+        color: #bdc3c7 !important;
+    }
+    /* Melhora a visualização em dispositivos móveis */
+    @media (max-width: 600px) {
+        h2 { font-size: 1.4em; }
+        button, a { width: 100%; text-align: center; }
+    }
+</style>
 {% endblock %}

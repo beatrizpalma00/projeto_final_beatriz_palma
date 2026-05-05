@@ -32,6 +32,45 @@
             box-sizing: border-box; 
         }
     </style>
+    <!-- SweetAlert2 para janelas de confirmação centradas -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Função global para confirmar submissão de formulários (Eliminar/Limpar)
+        function confirmarAcao(formId, titulo, texto) {
+            Swal.fire({
+                title: titulo,
+                text: texto,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#27ae60',
+                cancelButtonColor: '#e74c3c',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            })
+        }
+
+        // Função global para links simples (ex: remover ingrediente)
+        function confirmarLink(url, titulo, texto) {
+            Swal.fire({
+                title: titulo,
+                text: texto,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#27ae60',
+                cancelButtonColor: '#e74c3c',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 
@@ -40,7 +79,7 @@
         
         <div class="nav-links">
             <!-- Links acessíveis a todos -->
-            <a href="{% url 'lista_receitas' %}">Receitas</a>
+            <a href="{% url 'lista_receitas' %}">📖 Receitas</a>
 
             {% if user.is_authenticated %}
                 <!-- Links exclusivos para quem está logado -->
