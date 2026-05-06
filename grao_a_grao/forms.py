@@ -1,20 +1,26 @@
 from django import forms
 from .models import Receita, Ingrediente, Planeamento
+from django.db.models import Q
+
+# GESTÃO DE RECEITAS
 
 class RegistoReceitaForm(forms.ModelForm):
     class Meta:
         model = Receita
-        fields = ['titulo', 'categoria', 'tipo_prato', 'preparacao']
+        fields = ['titulo', 'categoria', 'tipo_prato', 'preparacao', 'is_public']
         labels = {
             'titulo': 'Título da Receita',
             'categoria': 'Categoria',
             'tipo_prato': 'Tipo de Prato',
             'preparacao': 'Modo de Preparação',
+            'is_public': 'Tornar Receita Pública (visível para todos)',
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Arroz de Lentilhas'}),
             'preparacao': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
+
+# GESTÃO DE INGREDIENTES
 
 class IngredienteForm(forms.ModelForm):
     class Meta:
@@ -32,6 +38,8 @@ class IngredienteForm(forms.ModelForm):
             'unidade': forms.Select(attrs={'class': 'form-control'}),
             'secao': forms.Select(attrs={'class': 'form-control'}),
         }
+
+# GESTÃO DO PLANEAMENTO
 
 class PlaneamentoForm(forms.ModelForm):
     class Meta:
@@ -52,4 +60,4 @@ class PlaneamentoForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(PlaneamentoForm, self).__init__(*args, **kwargs)
         if user:
-            self.fields['receita'].queryset = Receita.objects.filter(autor=user)
+            self.fields['receita'].queryset = Receita.objects.filter(Q(autor=user) | Q(is_public=True)).distinct()

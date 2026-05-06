@@ -4,8 +4,8 @@
 
 {% block content %}
 <div style="max-width: 500px; margin: 40px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-    <h2 style="color: #27ae60; text-align: center; margin-top: 0;">📅 Agendar Refeição</h2>
-    <p style="text-align: center; font-size: 1.1em; color: #34495e;">
+    <h2 style="color: #636b2f; margin-top: 0; font-weight: 800; font-size: 2.5rem;"><span style="margin-right: 15px;">📅</span>Agendar Refeição</h2>
+    <p style="font-size: 1.1em; color: #444;">
         Receita selecionada: <strong>{{ receita.titulo }}</strong>
     </p>
     <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
@@ -34,11 +34,11 @@
             {{ form.receita }}
         </div>
 
-        <button type="submit" style="width: 100%; background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: background 0.3s;">
+        <button type="submit" style="width: 100%; background: #556B2F; color: white; border: none; padding: 12px; border-radius: 30px; font-size: 1.1em; cursor: pointer; font-weight: bold; transition: background 0.3s;">
             ✅ Adicionar ao Planeamento
         </button>
         
-        <a href="{% url 'lista_receitas' %}" style="display: block; text-align: center; margin-top: 15px; color: #7f8c8d; text-decoration: none; font-size: 0.9em;">
+        <a href="{% url 'lista_receitas' %}" style="display: block; text-align: center; margin-top: 15px; color: #444; text-decoration: none; font-size: 0.9em;">
             Cancelar e voltar
         </a>
     </form>

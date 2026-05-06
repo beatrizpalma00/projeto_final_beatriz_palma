@@ -3,16 +3,19 @@
 {% block title %}{{ receita.titulo }} - Grão a Grão{% endblock %}
 
 {% block content %}
-    <a href="{% url 'lista_receitas' %}" style="display: inline-block; margin-bottom: 20px; color: #27ae60; text-decoration: none; font-weight: bold;">
+<div style="max-width: 800px; margin: 0 auto; padding: 10px;">
+    <a href="{% url 'lista_receitas' %}" style="display: inline-block; margin-bottom: 20px; color: #556B2F; text-decoration: none; font-weight: bold;">
         ← Voltar para a lista
     </a>
     
     <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1 style="color: #2c3e50; margin: 0;">{{ receita.titulo }}</h1>
-            <a href="{% url 'editar_receita' receita.id %}" class="btn btn-warning" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; background-color: rgba(210, 180, 140, 0.3); color: #5d4037; border: 1px solid rgba(210, 180, 140, 0.6); font-weight: bold; white-space: nowrap;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+            <h1 style="color: #636b2f; margin: 0; font-weight: 800; font-size: 2.5rem;"><span style="margin-right: 15px;">🍽️</span>{{ receita.titulo }}</h1>
+            {% if receita.autor == user %}
+            <a href="{% url 'editar_receita' receita.id %}" class="btn btn-warning" style="padding: 10px 20px; border-radius: 30px; text-decoration: none; background-color: rgba(210, 180, 140, 0.3); color: #5d4037; border: 1px solid rgba(210, 180, 140, 0.6); font-weight: bold; white-space: nowrap;">
                 ✏️ Editar Receita
             </a>
+            {% endif %}
         </div>
         
         <div style="margin-bottom: 30px;">
@@ -26,7 +29,7 @@
 
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px;">
             <div style="background: #f9fbf9; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0;">
-                <h3 style="color: #27ae60; margin-top: 0;">🛒 Ingredientes</h3>
+                <h3 style="color: #556B2F; margin-top: 0;">🛒 Ingredientes</h3>
                 <ul style="padding-left: 20px; line-height: 1.8;">
                     {% for ingrediente in receita.ingredientes.all %}
                         <li><strong>{{ ingrediente.quantidade }} {{ ingrediente.get_unidade_display }} de {{ ingrediente.nome }}</strong></li>
@@ -37,8 +40,8 @@
             </div>
 
             <div>
-                <h3 style="color: #27ae60; margin-top: 0;">👨‍🍳 Modo de Preparação</h3>
-                <div style="line-height: 1.7; color: #34495e; text-align: justify;">
+                <h3 style="color: #556B2F; margin-top: 0;">👨‍🍳 Modo de Preparação</h3> {# Mantido o verde musgo para o título da secção #}
+                <div style="line-height: 1.7; color: #444; text-align: justify;">
                     {{ receita.preparacao|linebreaks }}
                 </div>
             </div>
@@ -46,9 +49,10 @@
         
         <hr style="margin-top: 40px; border: 0; border-top: 1px solid #eee;">
         
-        <div style="display: flex; justify-content: space-between; color: #95a5a6; font-size: 0.85em;">
+        <div style="display: flex; justify-content: space-between; color: #444; font-size: 0.85em;">
             <span><strong>Autor:</strong> {{ receita.autor.username }}</span>
             <span><strong>Criada em:</strong> {{ receita.data_criacao|date:"d/m/Y" }}</span>
         </div>
     </div>
+</div>
 {% endblock %}

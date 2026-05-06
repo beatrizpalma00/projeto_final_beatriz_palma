@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# GESTÃO DE RECEITAS
+
 class Receita(models.Model):
     OPCOES_CATEGORIA = [
         ('carne', '🥩 Carne'),
@@ -25,9 +27,12 @@ class Receita(models.Model):
     autor = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     preparacao = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)
+    is_public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.titulo
+
+# GESTÃO DE INGREDIENTES
 
 class Ingrediente(models.Model):
     UNIDADE_CHOICES = [
@@ -56,7 +61,9 @@ class Ingrediente(models.Model):
     
     def __str__(self):
         return f"{self.nome} ({self.quantidade} {self.unidade})"
-    
+
+# GESTÃO DO PLANEAMENTO
+
 class Planeamento(models.Model):
     
     REFEICAO_CHOICES = [
@@ -77,6 +84,8 @@ class Planeamento(models.Model):
 
     def __str__(self):
         return f"{self.data} - {self.get_tipo_refeicao_display()} - {self.receita.titulo}"
+
+# LISTA DE COMPRAS E EXPORTAÇÕES
 
 class IngredienteDespensa(models.Model):
     utilizador = models.ForeignKey('auth.User', on_delete=models.CASCADE)

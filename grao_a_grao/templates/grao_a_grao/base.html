@@ -6,13 +6,28 @@
     <title>{% block title %}Grão a Grão{% endblock %}</title>
     <style>
         
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; line-height: 1.6; color: #333; background-color: #f9f9f9; }
-        nav { background: #27ae60; padding: 1rem; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; transition: opacity 0.3s; }
-        nav a:hover { opacity: 0.8; }
-        .container { padding: 20px; max-width: 1000px; margin: auto; min-height: 80vh; }
-        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; margin-top: 40px; background: white; }
-        .logo { font-size: 1.5rem; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; line-height: 1.6; color: #333; background-color: #f2f0ef; }
+        nav { 
+            background: #556B2F; 
+            padding: 1rem; 
+            color: white; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 20px;
+        }
+        nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: 700; transition: opacity 0.3s; font-family: inherit; }
+        nav a:hover { opacity: 0.8; } /* Ajustado para o novo verde musgo */
+        .container { padding: 20px; max-width: 1000px; margin: auto; min-height: 80vh; } /* Mantido o max-width para o conteúdo principal */
+        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #444; border-top: 1px solid #eee; margin-top: 40px; background: white; }
+        .logo { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.5px; color: white !important; font-family: inherit; }
 
        
         .messages { list-style: none; padding: 0; margin-bottom: 20px; }
@@ -31,6 +46,14 @@
             border-radius: 4px; 
             box-sizing: border-box; 
         }
+
+        /* Ajuste para tooltips sem bloquear o clique nos links do menu */
+        .acoes-refeicao button *, 
+        .acoes-refeicao a *,
+        form button *,
+        .alert * {
+            pointer-events: none;
+        }
     </style>
     <!-- SweetAlert2 para janelas de confirmação centradas -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -42,7 +65,7 @@
                 text: texto,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#27ae60',
+                confirmButtonColor: '#556B2F',
                 cancelButtonColor: '#e74c3c',
                 confirmButtonText: 'Confirmar',
                 cancelButtonText: 'Cancelar'
@@ -60,7 +83,7 @@
                 text: texto,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#27ae60',
+                confirmButtonColor: '#556B2F',
                 cancelButtonColor: '#e74c3c',
                 confirmButtonText: 'Confirmar',
                 cancelButtonText: 'Cancelar'
@@ -75,19 +98,24 @@
 <body>
 
     <nav>
+        <div class="nav-content">
         <a href="{% url 'home' %}" class="logo">Grão a Grão</a>
         
         <div class="nav-links">
             <!-- Links acessíveis a todos -->
-            <a href="{% url 'lista_receitas' %}">📖 Receitas</a>
+            <a href="{% url 'sobre' %}">Sobre</a>
+            <a href="{% url 'lista_receitas' %}">Receitas</a>
 
             {% if user.is_authenticated %}
                 <!-- Links exclusivos para quem está logado -->
-                <a href="{% url 'ver_planeamento' %}">📅 Planeamento</a>
-                <a href="{% url 'gerar_lista_compras' %}">🛒 Lista de Compras</a>
+                <a href="{% url 'ver_planeamento' %}">Planeamento</a>
+                <a href="{% url 'gerar_lista_compras' %}">Lista de Compras</a>
 
                 <div style="display: flex; align-items: center; gap: 15px; margin-left: 10px; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 15px;">
-                    <span style="color: white;">Olá, <strong>{{ user.username }}</strong></span>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <span style="color: white; font-size: 0.9em;">Olá, <strong>{{ user.username }}</strong></span>
+                        <a href="{% url 'password_change' %}" style="font-size: 0.7em; margin: 0; opacity: 0.9; text-decoration: underline;">Mudar Password</a>
+                    </div>
                     <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0;">
                         {% csrf_token %}
                         <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-weight: bold; width: auto;">
@@ -98,9 +126,10 @@
             {% else %}
                 <div style="display: flex; gap: 15px; margin-left: 15px;">
                     <a href="{% url 'login' %}">Entrar</a>
-                    <a href="{% url 'registo' %}">Registo</a>
+                    <a href="{% url 'registo' %}">Registar</a>
                 </div>
             {% endif %}
+        </div>
         </div>
     </nav>
 

@@ -4,17 +4,17 @@
 
 {% block content %}
 <div style="max-width: 400px; margin: auto; padding: 40px 0;">
-    <h2>Crie a sua conta</h2>
-    <p>Planeie as suas refeições e poupe tempo e dinheiro.</p>
+    <h2 style="color: #636b2f; font-weight: 800;"><span style="margin-right: 15px;">✨</span>Crie a sua conta</h2>
+    <p style="color: #444;">Planeie as suas refeições e poupe tempo e dinheiro.</p>
     
     <form method="post" style="background: #f9f9f9; padding: 20px; border-radius: 10px;">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" style="background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%;">
+        <button type="submit" style="background: #556B2F; color: white; border: none; padding: 12px 20px; border-radius: 30px; cursor: pointer; width: 100%; font-weight: bold;">
             Registar
         </button>
     </form>
     
-    <p style="margin-top: 20px;">Já tem uma conta? <a href="{% url 'login' %}" style="color: #27ae60;">Entre aqui</a>.</p>
+    <p style="margin-top: 20px;">Já tem uma conta? <a href="{% url 'login' %}" style="color: #556B2F;">Entre aqui</a>.</p>
 </div>
 {% endblock %}

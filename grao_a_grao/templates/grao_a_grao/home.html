@@ -1,30 +1,98 @@
 {% extends 'grao_a_grao/base.html' %}
+{% load static %}
 
 {% block title %}Início - Grão a Grão{% endblock %}
 
 {% block content %}
-<div style="text-align: center; padding: 60px 20px; background-color: #ffffff; border-radius: 15px; shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    <h1 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 10px;">Bem-vindo ao  Projeto Grão a Grão</h1>
-    <p style="font-size: 1.2rem; color: #7f8c8d; max-width: 600px; margin: 0 auto 40px auto;">
-        Aqui podes guarda as tuas receitas, criar o teu planeamento e desfrutar de cada refeição, grão a grão!
-    </p>
-    
-    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-    <a href="{% url 'login' %}" style="background-color: #27ae60; color: white; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; transition: 0.3s;">
-        Entrar
-    </a>
-    
-    <a href="{% url 'registo' %}" style="background-color: #ffffff; color: #27ae60; border: 2px solid #27ae60; padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; transition: 0.3s;">
-        Criar Conta
-    </a>
-</div>
+<style>
+    .home-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 40px 50px;
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+    @media (max-width: 768px) {
+        .home-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .home-card div {
+            text-align: center !important;
+        }
+        .home-card div[style*="display: flex"] {
+            justify-content: center !important;
+        }
+    }
+    .btn-home {
+        padding: 15px 35px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-align: center;
+        min-width: 160px;
+    }
+    .btn-primary-home {
+        background-color: #556B2F;
+        color: white;
+        border: 2px solid #556B2F;
+    }
+    .btn-primary-home:hover {
+        background-color: #425424;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(85, 107, 47, 0.3);
+    }
+    .btn-secondary-home {
+        background-color: white;
+        color: #556B2F;
+        border: 2px solid #556B2F;
+    }
+    .btn-secondary-home:hover {
+        background-color: #f2f0ef;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="home-card">
+    <!-- Coluna da Esquerda: Texto e Botões -->
+    <div style="flex: 1; min-width: 300px; text-align: left;">
+        <h1 style="color: #636b2f; font-size: 3.2rem; font-weight: 800; margin-bottom: 10px; margin-top: 0; line-height: 1.2;">Bem-vindo(a)</h1>
+        <p style="font-size: 1.25rem; color: #555; margin-bottom: 35px; max-width: 480px; line-height: 1.6;">
+            Aqui pode guardar as suas receitas, planear as sua refeições com calma e criar a sua lista de compras de forma simples.
+        </p>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="btn-home btn-primary-home">Entrar</a>
+            <a href="{% url 'registo' %}" class="btn-home btn-secondary-home">Criar Conta</a>
+        {% else %}
+            <a href="{% url 'ver_planeamento' %}" class="btn-home btn-primary-home">Ver Planeamento</a>
+        {% endif %}
+        </div>
     </div>
 
-    <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #eee;">
-        <p style="color: #95a5a6;">Queres apenas explorar?</p>
-        <a href="{% url 'lista_receitas' %}" style="color: #27ae60; font-weight: bold; text-decoration: underline;">
-            Ver Catálogo de Receitas
-        </a>
+    <!-- Coluna da Direita: Imagem Quadrada -->
+    <div style="flex: 0 1 350px; margin: 0 auto; padding: 10px; background: #f2f0ef; border-radius: 20px; box-sizing: border-box;">
+        <img src="{% static 'grao_a_grao/images/home_image.png' %}?v=2" 
+             alt="Grão a Grão - Cozinha Saudável" 
+             style="width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 15px; object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: block;">
+    </div>
+
+    <!-- Rodapé da Caixa (Links Públicos) -->
+    <div style="width: 100%; margin-top: 20px; padding-top: 30px; border-top: 1px solid #eee; text-align: left;">
+        <p style="color: #444;">
+            À procura de receitas? 
+            <a href="{% url 'lista_receitas' %}?origem=publicas" style="color: #556B2F; font-weight: bold; text-decoration: underline;">Consulte as receitas públicas</a>
+        </p>
+        <p style="color: #444; margin-top: 10px;">
+            Quer saber como funciona? <a href="{% url 'sobre' %}" style="color: #556B2F; font-weight: bold; text-decoration: underline;">Leia mais sobre o projeto</a>
+        </p>
     </div>
 </div>
 {% endblock %}

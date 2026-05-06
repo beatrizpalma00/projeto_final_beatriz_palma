@@ -3,10 +3,10 @@
 {% block title %}Registar Nova Receita - Grão a Grão{% endblock %}
 
 {% block content %}
-<div style="max-width: 700px; margin: 20px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+<div style="max-width: 800px; margin: 20px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
     
-    <h2 style="color: #27ae60; text-align: center; margin-top: 0;">🥗 Nova Receita</h2>
-    <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+    <h2 style="color: #636b2f; margin-top: 0; font-weight: 800; font-size: 2.5rem;"><span style="margin-right: 15px;">🥗</span>Nova Receita</h2>
+    <p style="color: #444; margin-bottom: 30px;">
         Primeiro, vamos definir os detalhes principais da sua receita.<br>*Todos os campos são de preenchimento obrigatório.
     </p>
 
@@ -14,7 +14,7 @@
         {% csrf_token %}
         
         {% for field in form %}
-            <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 20px; color: #444;">
                 <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #2c3e50;">
                     {{ field.label }}
                 </label>
@@ -26,14 +26,14 @@
         {% endfor %}
 
         <div style="margin-top: 30px;">
-            <button type="submit" style="background: #27ae60; color: white; border: none; padding: 15px 25px; border-radius: 30px; cursor: pointer; width: 100%; font-size: 1.1em; font-weight: bold; transition: 0.3s;">
+            <button type="submit" style="background: #556B2F; color: white; border: none; padding: 15px 25px; border-radius: 30px; cursor: pointer; width: 100%; font-size: 1.1em; font-weight: bold; transition: 0.3s;">
                 Continuar para Ingredientes →
             </button>
         </div>
     </form>
 
     <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'lista_receitas' %}" style="color: #95a5a6; text-decoration: none; font-size: 0.9em;">
+        <a href="{% url 'lista_receitas' %}" style="color: #444; text-decoration: none; font-size: 0.9em;">
             Cancelar e voltar
         </a>
     </div>
@@ -57,7 +57,7 @@
     }
 
     input:focus, select:focus, textarea:focus {
-        border-color: #27ae60;
+        border-color: #556B2F;
         outline: none;
         box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
     }

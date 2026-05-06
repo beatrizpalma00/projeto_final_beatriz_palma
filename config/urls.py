@@ -8,9 +8,18 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('sobre/', views.sobre, name='sobre'),
     path('registo/', views.registo, name='registo'),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='grao_a_grao/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+    # ALTERAÇÃO DE PASSWORD
+    path('password-change/', auth_views.PasswordChangeView.as_view(
+        template_name='grao_a_grao/password_change_form.html'
+    ), name='password_change'),
+    path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(
+        template_name='grao_a_grao/password_change_done.html'
+    ), name='password_change_done'),
     
     # GESTÃO DE RECEITAS
     
@@ -19,6 +28,8 @@ urlpatterns = [
     path('receita/<int:pk>/', views.detalhes_receita, name='detalhes_receita'),
     path('receita/<int:pk>/editar/', views.editar_receita, name='editar_receita'),
     path('receita/<int:pk>/eliminar/', views.eliminar_receita, name='eliminar_receita'),
+    path('receita/<int:pk>/toggle-publico/', views.toggle_publico, name='toggle_publico'),
+    path('receita/<int:pk>/copiar/', views.copiar_receita, name='copiar_receita'),
         
     # GESTÃO DE INGREDIENTES
   
@@ -42,6 +53,6 @@ urlpatterns = [
     path('planeamento/lista-compras/', views.gerar_lista_compras, name='gerar_lista_compras'),
     path('planeamento/lista-compras/despensa/', views.marcar_despensa, name='marcar_despensa'),
     path('planeamento/lista-compras/despensa/remover/', views.remover_despensa, name='remover_despensa'),
-    path('lista-compras/exportar/', views.exportar_lista_txt, name='exportar_lista_txt'),
+    path('lista-compras/pdf/', views.exportar_lista_pdf, name='exportar_lista_pdf'),
     path('planeamento/pdf/', views.exportar_planeamento_pdf, name='exportar_planeamento_pdf'),
 ]

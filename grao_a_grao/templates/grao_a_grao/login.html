@@ -1,0 +1,20 @@
+{% extends 'grao_a_grao/base.html' %}
+
+{% block title %}Entrar - Grão a Grão{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: auto; padding: 40px 0;">
+    <h2 style="color: #636b2f; font-weight: 800;"><span style="margin-right: 15px;">🔑</span>Entrar na sua conta</h2>
+    <p style="color: #444;">Bem-vindo(a) de volta! Introduza os seus dados para continuar.</p>
+    
+    <form method="post" style="background: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background: #556B2F; color: white; border: none; padding: 12px 20px; border-radius: 30px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1em; margin-top: 10px;">
+            Entrar
+        </button>
+    </form>
+    
+    <p style="margin-top: 20px;">Ainda não tem conta? <a href="{% url 'registo' %}" style="color: #556B2F; font-weight: bold;">Registe-se aqui</a>.</p>
+</div>
+{% endblock %}
