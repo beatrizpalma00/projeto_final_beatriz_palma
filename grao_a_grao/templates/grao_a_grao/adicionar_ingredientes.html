@@ -16,14 +16,29 @@
         {% if form.errors %}
             <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9em;">
                 <strong>Erro:</strong> Por favor verifica os dados inseridos.
-                {{ form.non_field_errors }}
+                {% if form.non_field_errors %}
+                    <ul style="margin: 5px 0 0 20px; padding: 0;">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% for field in form %}
+                    {% if field.errors %}
+                        <ul style="margin: 5px 0 0 20px; padding: 0;">
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         {% endif %}
         
-        {{ form.nome.label_tag }} {{ form.nome }}
-        {{ form.quantidade.label_tag }} {{ form.quantidade }}
-        {{ form.unidade.label_tag }} {{ form.unidade }}
-        {{ form.secao.label_tag }} {{ form.secao }}
+        <div style="margin-bottom: 20px;">{{ form.nome.label_tag }} {{ form.nome }}{% if form.nome.errors %}<div style="color: #e74c3c; font-size: 0.85em; margin-top: 5px;">{{ form.nome.errors }}</div>{% endif %}</div>
+        <div style="margin-bottom: 20px;">{{ form.quantidade.label_tag }} {{ form.quantidade }}{% if form.quantidade.errors %}<div style="color: #e74c3c; font-size: 0.85em; margin-top: 5px;">{{ form.quantidade.errors }}</div>{% endif %}</div>
+        <div style="margin-bottom: 20px;">{{ form.unidade.label_tag }} {{ form.unidade }}{% if form.unidade.errors %}<div style="color: #e74c3c; font-size: 0.85em; margin-top: 5px;">{{ form.unidade.errors }}</div>{% endif %}</div>
+        <div style="margin-bottom: 20px;">{{ form.secao.label_tag }} {{ form.secao }}{% if form.secao.errors %}<div style="color: #e74c3c; font-size: 0.85em; margin-top: 5px;">{{ form.secao.errors }}</div>{% endif %}</div>
         
          <button type="submit" style="background: {% if editando_ingrediente %}#f39c12{% else %}#3498db{% endif %}; color: white; border: none; padding: 12px; border-radius: 30px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold;">
             {% if editando_ingrediente %}
@@ -49,7 +64,7 @@
                         <strong>{{ ing.quantidade }} {{ ing.get_unidade_display }} de {{ ing.nome }}</strong>
                     </span>
                     
-                    <div style="display: flex; gap: 8px;">
+                    <div class="acoes-refeicao" style="display: flex; gap: 8px;">
                         <a href="{% url 'editar_ingrediente' ing.id %}" 
                            style="color: #2980b9; text-decoration: none; font-weight: bold; font-size: 0.85em; padding: 5px 12px; border: 1px solid #2980b9; border-radius: 20px; transition: 0.3s;"
                            onmouseover="this.style.backgroundColor='#2980b9'; this.style.color='white';"

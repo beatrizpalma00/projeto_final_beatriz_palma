@@ -330,7 +330,9 @@ def _obter_dados_lista_compras(user):
     planos = Planeamento.objects.filter(
         utilizador=user, 
         data__gte=date.today()
-    ).prefetch_related('receita__ingredientes')
+    ).prefetch_related(
+        'receita__ingredientes'
+    ).order_by('data', 'tipo_refeicao', 'receita__tipo_prato')
 
     # Obtém itens que o utilizador já marcou como tendo na despensa
     itens_despensa = IngredienteDespensa.objects.filter(utilizador=user).values_list('chave_ingrediente', flat=True)

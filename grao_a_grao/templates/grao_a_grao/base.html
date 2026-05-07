@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,8 +24,8 @@
             padding: 0 20px;
         }
         nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: 700; transition: opacity 0.3s; font-family: inherit; }
-        nav a:hover { opacity: 0.8; } /* Ajustado para o novo verde musgo */
-        .container { padding: 20px; max-width: 1000px; margin: auto; min-height: 80vh; } /* Mantido o max-width para o conteúdo principal */
+        nav a:hover { opacity: 0.8; }
+        .container { padding: 20px; max-width: 1000px; margin: auto; min-height: 80vh; }
         footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #444; border-top: 1px solid #eee; margin-top: 40px; background: white; }
         .logo { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.5px; color: white !important; font-family: inherit; }
 
@@ -46,8 +46,6 @@
             border-radius: 4px; 
             box-sizing: border-box; 
         }
-
-        /* Ajuste para tooltips sem bloquear o clique nos links do menu */
         .acoes-refeicao button *, 
         .acoes-refeicao a *,
         form button *,
@@ -55,10 +53,8 @@
             pointer-events: none;
         }
     </style>
-    <!-- SweetAlert2 para janelas de confirmação centradas -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Função global para confirmar submissão de formulários (Eliminar/Limpar)
         function confirmarAcao(formId, titulo, texto) {
             Swal.fire({
                 title: titulo,
@@ -76,7 +72,6 @@
             })
         }
 
-        // Função global para links simples (ex: remover ingrediente)
         function confirmarLink(url, titulo, texto) {
             Swal.fire({
                 title: titulo,
@@ -102,12 +97,10 @@
         <a href="{% url 'home' %}" class="logo">Grão a Grão</a>
         
         <div class="nav-links">
-            <!-- Links acessíveis a todos -->
             <a href="{% url 'sobre' %}">Sobre</a>
             <a href="{% url 'lista_receitas' %}">Receitas</a>
 
             {% if user.is_authenticated %}
-                <!-- Links exclusivos para quem está logado -->
                 <a href="{% url 'ver_planeamento' %}">Planeamento</a>
                 <a href="{% url 'gerar_lista_compras' %}">Lista de Compras</a>
 

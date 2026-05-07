@@ -1,5 +1,6 @@
 from django import forms
 from .models import Receita, Ingrediente, Planeamento
+from django.core.validators import MinValueValidator
 from django.db.models import Q
 
 # GESTÃO DE RECEITAS
@@ -23,20 +24,45 @@ class RegistoReceitaForm(forms.ModelForm):
 # GESTÃO DE INGREDIENTES
 
 class IngredienteForm(forms.ModelForm):
+    quantidade = forms.DecimalField(
+        validators=[MinValueValidator(0.01)],
+        label='Quantidade',
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+        error_messages={
+            'required': 'Por favor, insere a quantidade do ingrediente.',
+            'invalid': 'A quantidade deve ser um número válido.',
+            'min_value': 'A quantidade deve ser maior que zero.'
+        }
+    )
     class Meta:
         model = Ingrediente
         fields = ['nome', 'quantidade', 'unidade', 'secao']
         labels = {
             'nome': 'Nome do Ingrediente',
-            'quantidade': 'Quantidade',
             'unidade': 'Unidade',
             'secao': 'Secção',
         }
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Farinha de Trigo'}),
-            'quantidade': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'unidade': forms.Select(attrs={'class': 'form-control'}),
             'secao': forms.Select(attrs={'class': 'form-control'}),
+        }
+        error_messages = {
+            'nome': {
+                'required': 'Por favor, insere o nome do ingrediente.',
+                'max_length': 'O nome do ingrediente não pode ter mais de 100 caracteres.'
+            },
+            'quantidade': {
+                'required': 'Por favor, insere a quantidade do ingrediente.',
+                'invalid': 'A quantidade deve ser um número válido.',
+                'min_value': 'A quantidade deve ser maior que zero.'
+            },
+            'unidade': {
+                'required': 'Por favor, seleciona a unidade do ingrediente.'
+            },
+            'secao': {
+                'required': 'Por favor, seleciona a secção do ingrediente.'
+            }
         }
 
 # GESTÃO DO PLANEAMENTO
@@ -60,4 +86,4 @@ class PlaneamentoForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(PlaneamentoForm, self).__init__(*args, **kwargs)
         if user:
-            self.fields['receita'].queryset = Receita.objects.filter(Q(autor=user) | Q(is_public=True)).distinct()
+            self.fields['receita'].queryset = Receita.objects.filter(Q(autor=user) | Q(is_public=True)).distinct().order_by('titulo')
